@@ -1,0 +1,32 @@
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <LiquidCrystal_I2C.h>
+
+#define ONE_WIRE_BUS 4 // Pin donde está conectado el sensor DS18B20
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Dirección I2C y dimensiones del LCD (cambiar según tu LCD)
+
+void setup() {
+  Serial.begin(115200);
+  sensors.begin();
+  lcd.begin();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Temp DS18B20:");
+}
+
+void loop() {
+  sensors.requestTemperatures();
+  float temperature = sensors.getTempCByIndex(0);
+
+  lcd.setCursor(0, 1);
+  lcd.print("                "); // Limpiar la línea del LCD
+  lcd.setCursor(0, 1);
+  lcd.print("Temp: " + String(temperature) + " C");
+
+  Serial.println("Temperatura: " + String(temperature) + " C");
+  
+  delay(5000); // Esperar 5 segundos antes de medir la temperatura nuevamente
+}
