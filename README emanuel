@@ -1,0 +1,17 @@
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+char auth[] = "TuAuthToken"; // Reemplaza con tu token de autenticación Blynk
+char ssid[] = "TuSSID";     // Nombre de tu red WiFi
+char pass[] = "TuContraseña"; // Contraseña de tu red WiFi
+
+void setup() {
+  Serial.begin(115200);
+  Blynk.begin(auth, ssid, pass);
+  WiFi.mode(WIFI_AP_STA);
+  WiFi.softAP("NodeMCU_Master", "password"); // Crea un punto de acceso
+}
+
+void loop() {
+  Blynk.run();
+}
